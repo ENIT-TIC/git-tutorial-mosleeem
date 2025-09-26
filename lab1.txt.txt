@@ -1,0 +1,42 @@
+Réponses aux Questions du Lab Docker
+Section 1.0 - Questions conceptuelles
+
+1. Pensez-vous que cela revient à exécuter une machine virtuelle ?
+
+Non, ce n’est pas équivalent. Un conteneur utilise le noyau de la machine hôte, tandis qu’une machine virtuelle embarque son propre système d’exploitation complet. Les conteneurs sont donc plus légers, démarrent plus rapidement, mais les machines virtuelles offrent une isolation plus forte.
+
+2. Un conteneur est une abstraction ?
+
+b. d’application
+
+Un conteneur regroupe une application et toutes ses dépendances, mais il ne virtualise pas le matériel.
+
+3. Est-il possible d'utiliser à la fois des machines virtuelles et des conteneurs dans un même environnement ? Comment ?
+
+Oui, c’est tout à fait possible et fréquent. Par exemple, on peut exécuter Docker à l’intérieur de machines virtuelles pour ajouter une couche d’isolation, ou encore réserver les VMs aux services critiques et utiliser des conteneurs pour les applications plus légères. Dans la pratique, de nombreuses infrastructures combinent les deux selon leurs besoins.
+
+Questions pratiques
+
+Après docker container run alpine echo "hello from alpine"
+
+La commande affiche le message demandé puis le conteneur s’arrête aussitôt, ce qui est normal puisque la tâche est terminée.
+
+Après docker container run alpine /bin/sh
+
+Le conteneur démarre mais s’arrête immédiatement car le shell n’a pas de terminal interactif pour rester actif.
+
+Après docker container run -it alpine /bin/sh
+
+On obtient un shell interactif, car les options -i (interaction) et -t (pseudo-terminal) permettent d’interagir directement avec le conteneur.
+
+Le résultat de docker container ls -a
+
+Cette commande liste tous les conteneurs existants, qu’ils soient actifs ou arrêtés, avec leurs identifiants, l’image utilisée, la commande exécutée et leur état.
+
+Pourquoi autant de conteneurs de la même image alpine ?
+
+Parce que chaque exécution de docker run crée un nouveau conteneur distinct, même si l’image est identique. C’est ce qui permet l’isolation : chaque conteneur est une instance indépendante avec son propre système de fichiers.
+
+Comment revenir au conteneur avec le fichier hello.txt ?
+
+Il faut redémarrer le conteneur dans lequel le fichier a été créé en utilisant docker container start <ID>. Ensuite, on peut y exécuter des commandes avec docker container exec <ID> ls pour retrouver le fichier. Le fichier n’existe que dans ce conteneur précis.
